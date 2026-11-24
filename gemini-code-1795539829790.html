@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EngLearn - Media Pembelajaran Bahasa Inggris Interaktif</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-light: #eff6ff;
+      --primary-dark: #1d4ed8;
+      --accent-yellow: #fef08a;
+      --accent-yellow-dark: #ca8a04;
+      --accent-green: #dcfce7;
+      --accent-green-dark: #15803d;
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 40px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: #ffffff;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+    }
+
+    header h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.92;
+      font-weight: 400;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    /* Section Title */
+    .section-badge {
+      display: inline-block;
+      background-color: var(--accent-yellow);
+      color: #854d0e;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .main-section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 18px;
+    }
+
+    /* Curriculum Chapter Cards */
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .chapter-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .chapter-card:hover {
+      transform: translateY(-2px);
+      border-color: #93c5fd;
+    }
+
+    .chapter-card.active-chapter {
+      border-color: var(--primary);
+      background: linear-gradient(to bottom right, #ffffff, #f0f7ff);
+    }
+
+    .chapter-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topic-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .topic-btn {
+      text-align: left;
+      background: var(--bg-main);
+      border: 1.5px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    .topic-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Learning Workspace */
+    .learning-area {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .learning-header {
+      border-bottom: 2px solid var(--primary-light);
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .learning-header h2 {
+      font-size: 1.4rem;
+      color: var(--primary-dark);
+    }
+
+    .learning-header .breadcrumb {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .sub-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Vocabulary Cards Grid */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .vocab-card {
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+    }
+
+    .vocab-card:hover {
+      border-color: var(--primary);
+      background: #ffffff;
+    }
+
+    .vocab-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .vocab-word {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+
+    .vocab-phonetic {
+      font-size: 0.85rem;
+      color: var(--accent-green-dark);
+      background: var(--accent-green);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .vocab-meaning {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .vocab-example {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+      border-top: 1px dashed var(--border);
+      padding-top: 6px;
+    }
+
+    .speak-btn {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .speak-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .speak-btn:active {
+      transform: scale(0.93);
+    }
+
+    /* Side-by-Side Video & Transcript */
+    .media-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .video-column {
+      flex: 0 0 60%;
+      width: 60%;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #0f172a;
+      box-shadow: var(--shadow);
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-controls {
+      margin-top: 12px;
+      background: var(--primary-light);
+      padding: 10px 14px;
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .ctrl-btn {
+      background: #ffffff;
+      border: 1.5px solid #bfdbfe;
+      color: var(--primary-dark);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover, .ctrl-btn.active-speed {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Transcript Column */
+    .transcript-column {
+      flex: 1;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      max-height: 440px;
+      overflow-y: auto;
+    }
+
+    .transcript-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transcript-item {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .transcript-item:hover {
+      border-color: #93c5fd;
+    }
+
+    .transcript-en-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .transcript-en {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .transcript-id {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .mini-speak-btn {
+      background: var(--accent-yellow);
+      color: #854d0e;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .mini-speak-btn:hover {
+      background: #fde047;
+    }
+
+    /* Responsive Mobile Layout */
+    @media (max-width: 860px) {
+      .media-layout {
+        flex-direction: column;
+      }
+      .video-column {
+        width: 100%;
+        flex: none;
+      }
+      .transcript-column {
+        width: 100%;
+        max-height: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>EngLearn</h1>
+    <p>Media Pembelajaran Bahasa Inggris Interaktif</p>
+  </header>
+
+  <div class="container">
+    <span class="section-badge">Kurikulum Merdeka • SMP</span>
+    <h2 class="main-section-title">Bahasa Inggris Kelas 7</h2>
+
+    <!-- Navigasi Bab & Topik -->
+    <div id="chaptersContainer" class="chapters-grid"></div>
+
+    <!-- Area Belajar Utama -->
+    <main id="learningArea" class="learning-area">
+      <div class="learning-header">
+        <div>
+          <div id="topicBreadcrumb" class="breadcrumb">Bab 3: Home Sweet Home</div>
+          <h2 id="topicTitle">Preposition of Place</h2>
+        </div>
+        <button class="ctrl-btn" onclick="stopSpeech()">🔇 Hentikan Suara</button>
+      </div>
+
+      <!-- 1. Essential Vocabulary -->
+      <h3 class="sub-heading">📚 Essential Vocabulary & Key Expressions</h3>
+      <div id="vocabContainer" class="vocab-grid"></div>
+
+      <!-- 2. Video & Transcript Side-by-Side -->
+      <h3 class="sub-heading">🎬 Simak Video & Latihan Shadowing</h3>
+      <div class="media-layout">
+        <!-- Kolom Kiri: Video -->
+        <div class="video-column">
+          <div class="video-wrapper">
+            <div id="youtubePlayer"></div>
+          </div>
+          <div class="video-controls">
+            <div class="control-group">
+              <button class="ctrl-btn" onclick="replayVideo()">🔄 Ulangi Video (Replay)</button>
+            </div>
+            <div class="control-group">
+              <span class="control-label">Kecepatan:</span>
+              <button id="speed075" class="ctrl-btn" onclick="setPlaybackRate(0.75)">0.75x (Latihan)</button>
+              <button id="speed1" class="ctrl-btn active-speed" onclick="setPlaybackRate(1)">1x (Normal)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Transkrip Interaktif -->
+        <div class="transcript-column">
+          <div class="transcript-header">
+            <span>📝 Transkrip & Terjemahan</span>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Klik 🔊 untuk meniru</span>
+          </div>
+          <div id="transcriptContainer"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // =========================================================================
+    // DATA MATERI KURIKULUM (MUDAH DIEDIT / DITAMBAH OLEH GURU)
+    // =========================================================================
+    const curriculumData = {
+      chapters: [
+        {
+          id: "bab-1",
+          title: "Bab 1: About Me",
+          topics: [
+            {
+              id: "bab1-topik1",
+              title: "Let Me Introduce Myself",
+              videoUrl: "https://youtu.be/Unw82f22784",
+              vocabulary: [
+                { word: "My name is...", phonetic: "/mai neim iz/", meaning: "Nama saya adalah...", example: "My name is Galang." },
+                { word: "I am from...", phonetic: "/ai em from/", meaning: "Saya berasal dari...", example: "I am from Tondano." },
+                { word: "I live in...", phonetic: "/ai liv in/", meaning: "Saya tinggal di...", example: "I live in Sulawesi." },
+                { word: "My hobby is...", phonetic: "/mai hobi iz/", meaning: "Hobi saya adalah...", example: "My hobby is playing football." },
+                { word: "Nice to meet you", phonetic: "/nais tu mit yu/", meaning: "Senang bertemu denganmu", example: "Hello, nice to meet you!" }
+              ],
+              transcript: [
+                { en: "Hello everyone! Let me introduce myself.", id: "Halo semuanya! Izinkan saya memperkenalkan diri." },
+                { en: "My full name is Galang Pratama.", id: "Nama lengkap saya adalah Galang Pratama." },
+                { en: "I am thirteen years old and I am a seventh-grade student.", id: "Saya berumur tiga belas tahun dan saya siswa kelas tujuh." },
+                { en: "I live on Jalan Merdeka with my parents.", id: "Saya tinggal di Jalan Merdeka bersama orang tua saya." },
+                { en: "My favorite hobby is reading comics and cycling.", id: "Hobi favorit saya adalah membaca komik dan bersepeda." }
+              ]
+            },
+            {
+              id: "bab1-topik2",
+              title: "Introducing My Best Friend",
+              videoUrl: "https://www.youtube.com/watch?v=9_301R5L5g8",
+              vocabulary: [
+                { word: "Best friend", phonetic: "/best frend/", meaning: "Sahabat baik", example: "She is my best friend." },
+                { word: "He / She is...", phonetic: "/hi / syi iz/", meaning: "Dia (laki-laki / perempuan) adalah...", example: "She is very kind." },
+                { word: "Classmate", phonetic: "/klas-meit/", meaning: "Teman sekelas", example: "Andre is my classmate." },
+                { word: "Friendly", phonetic: "/frend-li/", meaning: "Ramah", example: "Everyone likes her because she is friendly." }
+              ],
+              transcript: [
+                { en: "This is my best friend, Monita.", id: "Ini adalah sahabat baik saya, Monita." },
+                { en: "She is twelve years old.", id: "Dia berumur dua belas tahun." },
+                { en: "She likes listening to music and drawing.", id: "Dia suka mendengarkan musik dan menggambar." },
+                { en: "We always go to school together.", id: "Kami selalu pergi ke sekolah bersama-sama." }
+              ]
+            }
+          ]
+        },
+        {
+          id: "bab-2",
+          title: "Bab 2: My Favorite Food",
+          topics: [
+            {
+              id: "bab2-topik1",
+              title: "Describing My Favorite Meals",
+              videoUrl: "https://www.youtube.com/watch?v=5211N9l2r_Q",
+              vocabulary: [
+                { word: "Delicious", phonetic: "/di-li-syes/", meaning: "Lezat / enak", example: "Fried rice is very delicious." },
+                { word: "Spicy", phonetic: "/spai-si/", meaning: "Pedas", example: "I like spicy sambal." },
+                { word: "Sweet", phonetic: "/swit/", meaning: "Manis", example: "This banana fritter is sweet." },
+                { word: "Savory", phonetic: "/sei-ve-ri/", meaning: "Gurih", example: "Chicken soup tastes savory." },
+                { word: "Breakfast", phonetic: "/brek-fest/", meaning: "Sarapan", example: "I eat bread for breakfast." }
+              ],
+              transcript: [
+                { en: "My favorite food is Indonesian fried rice.", id: "Makanan favorit saya adalah nasi goreng Indonesia." },
+                { en: "It tastes savory and a little bit spicy.", id: "Rasanya gurih dan sedikit pedas." },
+                { en: "I usually eat it with fried egg and crackers.", id: "Saya biasanya memakannya dengan telur goreng dan kerupuk." },
+                { en: "For dessert, I love sweet iced tea.", id: "Untuk hidangan penutup, saya suka es teh manis." }
+              ]
+            },
+            {
+              id: "bab2-topik2",
+              title: "Ingredients & Utensils",
+              videoUrl: "https://www.youtube.com/watch?v=4xK6sB64C88",
+              vocabulary: [
+                { word: "Ingredients", phonetic: "/in-gri-di-ens/", meaning: "Bahan-bahan masakan", example: "Prepare all the ingredients first." },
+                { word: "Frying pan", phonetic: "/frai-ing pen/", meaning: "Wajan penggorengan", example: "Heat the oil in the frying pan." },
+                { word: "Spoon & Fork", phonetic: "/spun en fork/", meaning: "Sendok & Garpu", example: "We eat noodles with a spoon and fork." },
+                { word: "Cut / Chop", phonetic: "/kat / cop/", meaning: "Memotong / Mencincang", example: "Chop the garlic into small pieces." }
+              ],
+              transcript: [
+                { en: "To make a simple omelet, we need two eggs and a pinch of salt.", id: "Untuk membuat telur dadar sederhana, kita butuh dua telur dan sejumput garam." },
+                { en: "First, crack the eggs into a bowl.", id: "Pertama, pecahkan telur ke dalam mangkuk." },
+                { en: "Next, stir them well using a fork.", id: "Selanjutnya, kocok rata menggunakan garpu." },
+                { en: "Finally, cook it on a hot frying pan.", id: "Terakhir, masak di atas wajan panas." }
+              ]
+            }
+          ]
+        },
+        {
+          id: "bab-3",
+          title: "Bab 3: Home Sweet Home",
+          topics: [
+            {
+              id: "bab3-topik1",
+              title: "Rooms in My House",
+              videoUrl: "https://www.youtube.com/watch?v=R9intHqlzhc",
+              vocabulary: [
+                { word: "Living room", phonetic: "/li-ving rum/", meaning: "Ruang tamu / keluarga", example: "We watch TV in the living room." },
+                { word: "Bedroom", phonetic: "/bed-rum/", meaning: "Kamar tidur", example: "My bedroom is clean and tidy." },
+                { word: "Kitchen", phonetic: "/ki-cen/", meaning: "Dapur", example: "Mother cooks dinner in the kitchen." },
+                { word: "Bathroom", phonetic: "/bath-rum/", meaning: "Kamar mandi", example: "Wash your hands in the bathroom." }
+              ],
+              transcript: [
+                { en: "Welcome to my house! Let me show you around.", id: "Selamat datang di rumahku! Mari saya tunjukkan sekelilingnya." },
+                { en: "This is our living room. There is a big sofa here.", id: "Ini ruang keluarga kami. Ada sofa besar di sini." },
+                { en: "Behind the living room is the kitchen.", id: "Di belakang ruang keluarga adalah dapur." },
+                { en: "Upstairs, there are two bedrooms and one bathroom.", id: "Di lantai atas, ada dua kamar tidur dan satu kamar mandi." }
+              ]
+            },
+            {
+              id: "bab3-topik2",
+              title: "Preposition of Place",
+              videoUrl: "https://youtu.be/OlUZcL_7Pbg?si=YBZvckP4ntDiM2ZR",
+              vocabulary: [
+                { word: "In", phonetic: "/in/", meaning: "Di dalam", example: "The books are in the bag." },
+                { word: "On", phonetic: "/on/", meaning: "Di atas (menempel)", example: "The lamp is on the table." },
+                { word: "Under", phonetic: "/an-der/", meaning: "Di bawah", example: "The cat is sleeping under the chair." },
+                { word: "Behind", phonetic: "/bi-haind/", meaning: "Di belakang", example: "The garden is behind the house." },
+                { word: "In front of", phonetic: "/in frant of/", meaning: "Di depan", example: "The car is parked in front of the garage." },
+                { word: "Next to", phonetic: "/neks tu/", meaning: "Di sebelah / Di samping", example: "The sofa is next to the window." },
+                { word: "Between", phonetic: "/bi-twin/", meaning: "Di antara (dua benda)", example: "The table is between two chairs." },
+                { word: "Above", phonetic: "/e-bav/", meaning: "Di atas (tidak menempel)", example: "The clock hangs above the door." }
+              ],
+              transcript: [
+                { en: "Today we are learning about prepositions of place.", id: "Hari ini kita belajar tentang kata depan penunjuk tempat." },
+                { en: "Prepositions of place tell us where people or things are located.", id: "Preposition of place memberi tahu kita di mana posisi orang atau benda berada." },
+                { en: "Look at the ball. The ball is in the box.", id: "Lihat bolanya. Bola itu berada di dalam kotak." },
+                { en: "Now, the ball is on the box.", id: "Sekarang, bola itu berada di atas kotak." },
+                { en: "Where is the ball now? It is under the box.", id: "Di mana bolanya sekarang? Bolanya berada di bawah kotak." },
+                { en: "The ball is in front of the box, and now it is behind the box.", id: "Bola itu di depan kotak, dan sekarang di belakang kotak." },
+                { en: "When it is at the side, we say the ball is next to the box.", id: "Ketika berada di sisi samping, kita katakan bola itu di sebelah kotak." },
+                { en: "If there are two boxes, the ball is between the boxes.", id: "Jika ada dua kotak, bola itu berada di antara kotak-kotak tersebut." }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    // =========================================================================
+    // LOGIKA APLIKASI & YOUTUBE IFRAME API
+    // =========================================================================
+    let activeChapterId = "bab-3";
+    let activeTopicId = "bab3-topik2"; // Default langsung membuka Preposition of Place
+    let ytPlayer = null;
+    let isYtReady = false;
+    let pendingVideoId = null;
+
+    // Ekstrak ID video YouTube dari berbagai format URL
+    function extractYouTubeID(url) {
+      if (!url) return "";
+      const regExp = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/;
+      const match = url.match(regExp);
+      return match ? match[1] : url;
+    }
+
+    // Muat YouTube IFrame API secara asinkron
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      isYtReady = true;
+      const initialTopic = findTopic(activeChapterId, activeTopicId);
+      const initialVideoId = extractYouTubeID(initialTopic.videoUrl);
+
+      ytPlayer = new YT.Player('youtubePlayer', {
+        videoId: initialVideoId,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1
+        },
+        events: {
+          onReady: () => {
+            if (pendingVideoId) {
+              ytPlayer.loadVideoById(pendingVideoId);
+              pendingVideoId = null;
+            }
+          }
+        }
+      });
+    }
+
+    // Fungsi Text-to-Speech (Web Speech API)
+    function speakText(text) {
+      if (!('speechSynthesis' in window)) {
+        alert("Browser kamu belum mendukung fitur suara otomatis.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.9; // Sedikit lebih jelas untuk siswa SMP
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    // Kontrol Video
+    function replayVideo() {
+      if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
+        ytPlayer.seekTo(0);
+        ytPlayer.playVideo();
+      }
+    }
+
+    function setPlaybackRate(rate) {
+      if (ytPlayer && typeof ytPlayer.setPlaybackRate === 'function') {
+        ytPlayer.setPlaybackRate(rate);
+      }
+      document.getElementById('speed075').classList.toggle('active-speed', rate === 0.75);
+      document.getElementById('speed1').classList.toggle('active-speed', rate === 1);
+    }
+
+    // Helper mencari data topik
+    function findTopic(chapterId, topicId) {
+      const chapter = curriculumData.chapters.find(c => c.id === chapterId);
+      if (!chapter) return null;
+      return chapter.topics.find(t => t.id === topicId);
+    }
+
+    // Render Menu Bab & Topik
+    function renderChapters() {
+      const container = document.getElementById('chaptersContainer');
+      container.innerHTML = '';
+
+      curriculumData.chapters.forEach(chapter => {
+        const isChapterActive = chapter.id === activeChapterId;
+        const card = document.createElement('div');
+        card.className = `chapter-card ${isChapterActive ? 'active-chapter' : ''}`;
+
+        let topicsHtml = '';
+        chapter.topics.forEach(topic => {
+          const isTopicActive = topic.id === activeTopicId;
+          topicsHtml += `
+            <button 
+              class="topic-btn ${isTopicActive ? 'active' : ''}" 
+              onclick="selectTopic('${chapter.id}', '${topic.id}')">
+              <span>${topic.title}</span>
+              <span>${isTopicActive ? '📖' : '→'}</span>
+            </button>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="chapter-title">📘 ${chapter.title}</div>
+          <div class="topic-list">${topicsHtml}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Render Konten Topik Terpilih
+    function renderTopicContent() {
+      const chapter = curriculumData.chapters.find(c => c.id === activeChapterId);
+      const topic = findTopic(activeChapterId, activeTopicId);
+      if (!chapter || !topic) return;
+
+      // Update Judul & Breadcrumb
+      document.getElementById('topicBreadcrumb').textContent = chapter.title;
+      document.getElementById('topicTitle').textContent = topic.title;
+
+      // Render Kosakata
+      const vocabContainer = document.getElementById('vocabContainer');
+      vocabContainer.innerHTML = '';
+      topic.vocabulary.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'vocab-card';
+        const safeText = item.word.replace(/'/g, "\\'");
+        card.innerHTML = `
+          <div>
+            <div class="vocab-top">
+              <span class="vocab-word">${item.word}</span>
+              <button class="speak-btn" title="Dengarkan pelafalan" onclick="speakText('${safeText}')">🔊</button>
+            </div>
+            <div class="vocab-phonetic">${item.phonetic}</div>
+            <div class="vocab-meaning">${item.meaning}</div>
+          </div>
+          ${item.example ? `<div class="vocab-example">"${item.example}"</div>` : ''}
+        `;
+        vocabContainer.appendChild(card);
+      });
+
+      // Update Video YouTube
+      const videoId = extractYouTubeID(topic.videoUrl);
+      if (isYtReady && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+        ytPlayer.loadVideoById(videoId);
+        setPlaybackRate(1);
+      } else {
+        pendingVideoId = videoId;
+      }
+
+      // Render Transkrip
+      const transcriptContainer = document.getElementById('transcriptContainer');
+      transcriptContainer.innerHTML = '';
+      topic.transcript.forEach(line => {
+        const div = document.createElement('div');
+        div.className = 'transcript-item';
+        const safeSentence = line.en.replace(/'/g, "\\'");
+        div.innerHTML = `
+          <div class="transcript-en-row">
+            <span class="transcript-en">${line.en}</span>
+            <button class="mini-speak-btn" onclick="speakText('${safeSentence}')">🔊 Tiru</button>
+          </div>
+          <div class="transcript-id">${line.id}</div>
+        `;
+        transcriptContainer.appendChild(div);
+      });
+    }
+
+    // Handler Klik Topik
+    function selectTopic(chapterId, topicId) {
+      stopSpeech();
+      activeChapterId = chapterId;
+      activeTopicId = topicId;
+      renderChapters();
+      renderTopicContent();
+      document.getElementById('learningArea').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Inisialisasi Halaman
+    renderChapters();
+    renderTopicContent();
+  </script>
+</body>
+</html>
